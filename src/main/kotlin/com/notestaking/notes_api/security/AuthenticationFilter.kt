@@ -1,6 +1,7 @@
 package com.notestaking.notes_api.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.notestaking.notes_api.dtos.user.LoginRequestDto
 import com.notestaking.notes_api.dtos.user.UserReqDto
 import com.notestaking.notes_api.service.user.CustomUserDetails
 import jakarta.servlet.FilterChain
@@ -23,7 +24,7 @@ class AuthenticationFilter (
 
     override fun attemptAuthentication(req: HttpServletRequest, res: HttpServletResponse): Authentication {
         println("AuthenticationFilter -> attemptAuthentication")
-        val credentials = ObjectMapper().readValue(req.inputStream, UserReqDto::class.java)
+        val credentials = ObjectMapper().readValue(req.inputStream, LoginRequestDto::class.java)
         val token = UsernamePasswordAuthenticationToken(credentials.email, credentials.password)
         return authenticationManager.authenticate(token)
     }

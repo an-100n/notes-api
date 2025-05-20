@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -21,6 +20,9 @@ class WebSecurityConfig(
     private val bCryptPasswordEncoder: BCryptPasswordEncoder,
     private val jwtService: JWTService
 ) {
+
+
+
 
     @Bean
     fun filterChain(http: HttpSecurity, authManager: AuthenticationManager): SecurityFilterChain {
@@ -37,17 +39,23 @@ class WebSecurityConfig(
             .csrf { it.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
-                it.requestMatchers(
-                    AntPathRequestMatcher(SecurityConstants.REGISTER_PATH),
-                    AntPathRequestMatcher(SecurityConstants.LOGIN_PATH)
-                ).permitAll()
+                it.requestMatchers(SecurityConstants.REGISTER_PATH, SecurityConstants.LOGIN_PATH).permitAll()
+
+//                it.requestMatchers(
+//                    AntPathRequestMatcher(SecurityConstants.REGISTER_PATH),
+//                    AntPathRequestMatcher(SecurityConstants.LOGIN_PATH)
+//                ).permitAll()
                 it.anyRequest().authenticated()
             }
             .addFilter(authFilter)
-            .addFilterAfter(AuthorizationFilter(authManager, jwtService), UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterAfter(
+                AuthorizationFilter(authManager, jwtService),
+                UsernamePasswordAuthenticationFilter::class.java
+            )
 
         return http.build()
     }
+
     @Bean
     fun authenticationManager(userService: UserService, passwordEncoder: BCryptPasswordEncoder): AuthenticationManager {
         return AuthenticationManager { auth ->

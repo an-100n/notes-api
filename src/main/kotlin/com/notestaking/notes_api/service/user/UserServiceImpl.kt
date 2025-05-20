@@ -26,6 +26,10 @@ class UserServiceImpl(
         if (userRepository.findByEmail(user.email) != null) {
             throw DuplicateResourceException("User with this email already exists: ${user.email}")
         }
+        if (userRepository.findByUsername(user.username) != null) {
+            throw DuplicateResourceException("Username '${user.username}' is already taken")
+        }
+
 
         val userEntity = UserEntity(
             email = user.email,
