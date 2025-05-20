@@ -12,7 +12,7 @@ interface FolderRepository : JpaRepository<FolderEntity, UUID> {
     @Transactional
     fun deleteByIdAndUser_Id(id: UUID, user_id: UUID)
 
-    fun getFoldersByUser_Id(user_id: UUID): Optional<List<NoteEntity>>
+    fun getFoldersByUser_Id(user_id: UUID): List<NoteEntity>?
 
     //Optional<List<NoteEntity>> getNotesByIdAndUserId(UUID id, UUID user_id);
 
