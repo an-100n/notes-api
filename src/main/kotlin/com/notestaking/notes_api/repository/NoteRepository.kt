@@ -12,4 +12,7 @@ interface NoteRepository : JpaRepository<NoteEntity, UUID> {
     fun findByIdAndOwner_Id(id: UUID, userId: UUID): NoteEntity?
 
     fun deleteByIdAndOwner_Id(id: UUID, userId: UUID)
+
+
+
 }
