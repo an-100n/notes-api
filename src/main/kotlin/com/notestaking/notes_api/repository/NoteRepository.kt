@@ -7,7 +7,7 @@ import java.util.UUID
 
 interface NoteRepository : JpaRepository<NoteEntity, UUID> {
 
-    fun findByFolderIdAndOwner_Id(folderId: UUID, userId: UUID): NoteEntity?
+    fun findByFolderIdAndOwner_Id(folderId: UUID, userId: UUID): List<NoteEntity>?
 
     fun findByIdAndOwner_Id(id: UUID, userId: UUID): NoteEntity?
 

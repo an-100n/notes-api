@@ -20,4 +20,4 @@ class NoteEntity(
     @JoinColumn(name = "folder_id")
     var folder: FolderEntity
 
-)
+): BaseEntity()

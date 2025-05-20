@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "folders", uniqueConstraints = [UniqueConstraint(columnNames = ["folder_name", "user_id"])])
-class FolderEntity (
+class FolderEntity(
     @Column(nullable = false, length = 150)
     var folderName : String,
 
@@ -13,5 +13,5 @@ class FolderEntity (
     var user: UserEntity,
 
     @OneToMany(mappedBy = "folder", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var notes : List<NoteEntity>
-)
+    var notes: MutableList<NoteEntity> = mutableListOf()
+): BaseEntity()

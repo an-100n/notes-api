@@ -46,13 +46,19 @@ class UserServiceImpl(
     override fun loadUserByUsername(email: String): UserDetails {
         val user = userRepository.findByEmail(email)
             ?: throw ResourceNotFoundException("User not found with identifier: $email")
-
         return CustomUserDetails(
             id = user.id!!,
             email = user.email,
-            username = user.username,
+            realUsername = user.username,
             password = user.password
         )
+        //CustomUserDetails made some chenges
+//        return CustomUserDetails(
+//            id = user.id!!,
+//            email = user.email,
+//            username = user.username,
+//            password = user.password
+//        )
     }
 
     override fun findUserById(userId: UUID): UserEntity? =
