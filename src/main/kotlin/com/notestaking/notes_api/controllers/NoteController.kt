@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import jakarta.validation.Valid
 import java.util.*
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 @RestController
 @RequestMapping("/api/notes")
@@ -17,12 +18,13 @@ class NoteController(
     private val noteService: NoteService,
     private val folderRepository: FolderRepository
 ) {
-
+    private val logger = KotlinLogging.logger {}
     @PostMapping("/create")
     fun createNote(
         @RequestBody @Valid noteReqDto: NoteReqDto,
         auth: Authentication
     ): ResponseEntity<NoteResDto> {
+logger.info { "creating a note" }
         val userId = UUID.fromString(auth.name)
         val createdNote = noteService.createNote(noteReqDto, userId)
         return ResponseEntity.status(HttpStatus.CREATED).body(createdNote)
