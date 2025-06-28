@@ -20,30 +20,30 @@ repositories {
 }
 
 dependencies {
-	// Existing
+
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+	implementation("io.github.cdimascio:java-dotenv:5.2.2")
 
-	// ✅ Add for Spring Security
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
-	// ✅ Add for JWT support (JJWT or Java JWT by Auth0)
+
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5") // JSON parser for JWT
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
-	// ✅ Add for password encoding
+
 	implementation("org.springframework.security:spring-security-crypto")
 
-	// Dev + DB
+
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
 
-	// Testing
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
