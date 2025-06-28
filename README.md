@@ -1,11 +1,11 @@
-# 📝 Kotlin Spring Boot Notes API
+#  Kotlin Spring Boot Notes API
 
 A simple  note-taking API built using Kotlin and Spring Boot.
 This API allows users to create and manage notes, organize them into folders.
 
 ---
 
-## ✨ Features
+##  Features
 
 - Create, read, update, delete notes
 - Notes default to a "Default" folder if no folder is specified
@@ -14,7 +14,7 @@ This API allows users to create and manage notes, organize them into folders.
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - **Language:** Kotlin
 - **Framework:** Spring Boot
