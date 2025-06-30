@@ -6,9 +6,9 @@ import com.notestaking.notes_api.dtos.folder.FolderResDto
 import com.notestaking.notes_api.dtos.note.NoteResDto
 import com.notestaking.notes_api.entity.FolderEntity
 import com.notestaking.notes_api.entity.UserEntity
+import com.notestaking.notes_api.exceptions.ServiceException
 import com.notestaking.notes_api.repository.FolderRepository
 import com.notestaking.notes_api.repository.NoteRepository
-import org.hibernate.service.spi.ServiceException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.*
@@ -45,7 +45,7 @@ class FolderServiceImpl(
         try {
             folderRepository.deleteByIdAndUser_Id(folderId, userId)
         } catch (e: Exception) {
-            throw ServiceException("Error while deleting folder: ${e.message}", e) as Throwable
+            throw ServiceException("Error while deleting folder: ${e.message}")
         }
     }
 
