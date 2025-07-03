@@ -13,13 +13,13 @@ import java.util.*
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 @RestController
-@RequestMapping("/api/notes")
+@RequestMapping("/api/v1/notes")
 class NoteController(
     private val noteService: NoteService,
     private val folderRepository: FolderRepository
 ) {
     private val logger = KotlinLogging.logger {}
-    @PostMapping("/create")
+    @PostMapping
     fun createNote(
         @RequestBody @Valid noteReqDto: NoteReqDto,
         auth: Authentication
