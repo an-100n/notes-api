@@ -19,8 +19,6 @@ class FolderController(
     private val folderService: FolderService,
 
     ) {
-
-    private val log = LoggerFactory.getLogger(FolderController::class.java)
     private val logger = KotlinLogging.logger {}
 
     @GetMapping
