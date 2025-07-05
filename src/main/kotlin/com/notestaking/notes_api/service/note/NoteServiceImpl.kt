@@ -10,6 +10,7 @@ import com.notestaking.notes_api.repository.FolderRepository
 import com.notestaking.notes_api.repository.NoteRepository
 import com.notestaking.notes_api.repository.UserRepository
 import org.slf4j.LoggerFactory
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -23,18 +24,18 @@ class NoteServiceImpl(
 
     private val log = LoggerFactory.getLogger(NoteServiceImpl::class.java)
 
-    override fun createNote(noteReqDto: NoteReqDto, userId: UUID): NoteResDto {
-        log.info("📌 Creating a note for user ID: $userId")
-
+    override fun createNote(note: NoteReqDto, auth: Authentication): NoteResDto {
+        //log.info("📌 Creating a note for user ID: $userId")
+        val userId = UUID.fromString(auth.name)
         val user = userRepository.findById(userId).orElse(null)
             ?: throw ResourceNotFoundException("User not found")
 
-        val folder = getOrCreateFolder(noteReqDto.folder, user)
+        val folder = getOrCreateFolder(note.folder, user)
 
         val note = NoteEntity(
             owner = user,
-            noteTitle = noteReqDto.noteTitle,
-            noteBody = noteReqDto.noteBody,
+            noteTitle = note.noteTitle,
+            noteBody = note.noteBody,
             folder = folder
         )
 
@@ -50,7 +51,9 @@ class NoteServiceImpl(
         )
     }
 
-    override fun getNoteByIdAndUser(noteId: UUID, userId: UUID): NoteResDto {
+    override fun getNoteByIdAndUser(noteId: UUID, auth: Authentication): NoteResDto {
+
+        val userId = UUID.fromString(auth.name)
         val note = noteRepository.findByIdAndOwner_Id(noteId, userId)
             ?: throw ResourceNotFoundException("Note not found for the given ID.")
 
@@ -63,8 +66,9 @@ class NoteServiceImpl(
     }
 
     @Transactional
-    override fun deleteNoteByIdAndUser(noteId: UUID, userId: UUID) {
-        val note = noteRepository.findByIdAndOwner_Id(noteId, userId)
+    override fun deleteNoteByIdAndUser(noteId: UUID, auth: Authentication) {
+        val userId = UUID.fromString(auth.name)
+         noteRepository.findByIdAndOwner_Id(noteId, userId)
             ?: throw ResourceNotFoundException("Note not found for the given ID.")
 
         noteRepository.deleteByIdAndOwner_Id(noteId, userId)

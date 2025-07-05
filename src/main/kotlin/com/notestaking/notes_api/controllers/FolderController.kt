@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/api/folder")
+@RequestMapping("/api/v1/folders")
 class FolderController(
     private val folderService: FolderService,
     private val userService: UserService

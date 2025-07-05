@@ -13,40 +13,34 @@ import java.util.*
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 @RestController
-@RequestMapping("/api/notes")
+@RequestMapping("/api/v1/notes")
 class NoteController(
     private val noteService: NoteService,
     private val folderRepository: FolderRepository
 ) {
     private val logger = KotlinLogging.logger {}
-    @PostMapping("/create")
-    fun createNote(
-        @RequestBody @Valid noteReqDto: NoteReqDto,
-        auth: Authentication
-    ): ResponseEntity<NoteResDto> {
-logger.info { "creating a note" }
-        val userId = UUID.fromString(auth.name)
-        val createdNote = noteService.createNote(noteReqDto, userId)
+
+    @PostMapping()
+    fun createNote(@RequestBody @Valid noteReqDto: NoteReqDto, auth: Authentication): ResponseEntity<NoteResDto> {
+        logger.info { "Attempt to create a note" }
+        val createdNote = noteService.createNote(noteReqDto, auth)
+        logger.info { "Successfully  created a note" }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdNote)
     }
 
     @GetMapping("/{noteId}")
-    fun getNoteById(
-        @PathVariable noteId: UUID,
-        auth: Authentication
-    ): ResponseEntity<NoteResDto> {
-        val userId = UUID.fromString(auth.name)
-        val note = noteService.getNoteByIdAndUser(noteId, userId)
+    fun getNoteById(@PathVariable noteId: UUID, auth: Authentication): ResponseEntity<NoteResDto> {
+        logger.info { "Attempt to get a note by ID" }
+        val note = noteService.getNoteByIdAndUser(noteId, auth)
+        logger.info { "Successfully got a note by ID" }
         return ResponseEntity.ok(note)
     }
 
     @DeleteMapping("/{noteId}")
-    fun deleteNoteById(
-        @PathVariable noteId: UUID,
-        auth: Authentication
-    ): ResponseEntity<String> {
-        val userId = UUID.fromString(auth.name)
-        noteService.deleteNoteByIdAndUser(noteId, userId)
+    fun deleteNoteById(@PathVariable noteId: UUID, auth: Authentication): ResponseEntity<String> {
+        logger.info { "Attempt to delete a note by ID" }
+        noteService.deleteNoteByIdAndUser(noteId, auth)
+        logger.info { "Successfully deleted the note by ID" }
         return ResponseEntity.ok("Note deleted !!!")
     }
 }
