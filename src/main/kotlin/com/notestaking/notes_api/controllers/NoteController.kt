@@ -20,7 +20,7 @@ class NoteController(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    @PostMapping()
+    @PostMapping
     fun createNote(@RequestBody @Valid noteReqDto: NoteReqDto, auth: Authentication): ResponseEntity<NoteResDto> {
         logger.info { "Attempt to create a note" }
         val createdNote = noteService.createNote(noteReqDto, auth)

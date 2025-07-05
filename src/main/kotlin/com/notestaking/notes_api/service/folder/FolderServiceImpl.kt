@@ -5,23 +5,28 @@ import com.notestaking.notes_api.dtos.folder.FolderReqDto
 import com.notestaking.notes_api.dtos.folder.FolderResDto
 import com.notestaking.notes_api.dtos.note.NoteResDto
 import com.notestaking.notes_api.entity.FolderEntity
-import com.notestaking.notes_api.entity.UserEntity
 import com.notestaking.notes_api.exceptions.ServiceException
 import com.notestaking.notes_api.repository.FolderRepository
 import com.notestaking.notes_api.repository.NoteRepository
+import com.notestaking.notes_api.service.user.UserService
 import org.slf4j.LoggerFactory
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class FolderServiceImpl(
     private val folderRepository: FolderRepository,
-    private val noteRepository: NoteRepository
+    private val noteRepository: NoteRepository,
+    private val userService: UserService
 ) : FolderService {
 
     private val log = LoggerFactory.getLogger(FolderServiceImpl::class.java)
 
-    override fun createFolder(folder: FolderReqDto, user: UserEntity): FolderResDto {
+    override fun createFolder(folder: FolderReqDto, auth: Authentication): FolderResDto {
+        val userId = UUID.fromString(auth.name)
+        val user = userService.findUserById(userId)
+            ?: throw ServiceException("User not found with ID: $userId")
         log.info("FolderServiceImpl -> createFolder {}", user)
 
         val folderEntity = FolderEntity(
@@ -37,7 +42,8 @@ class FolderServiceImpl(
         )
     }
 
-    override fun deleteFolder(folderId: UUID, userId: UUID) {
+    override fun deleteFolder(folderId: UUID, auth: Authentication) {
+        val userId = UUID.fromString(auth.name)
         if (!folderRepository.existsById(folderId)) {
             throw ResourceNotFoundException("Folder not found, cannot be deleted")
         }
@@ -49,7 +55,8 @@ class FolderServiceImpl(
         }
     }
 
-    override fun getFolders(userId: UUID): List<FolderResDto> {
+    override fun getFolders(auth: Authentication): List<FolderResDto> {
+        val userId = UUID.fromString(auth.name)
         val folders = folderRepository.getFoldersByUser_Id(userId)
             ?: throw NoSuchElementException("No folders found for user ID: $userId")
 
@@ -63,7 +70,8 @@ class FolderServiceImpl(
 
 
 
-    override fun getNotesByFolder(folderId: UUID, userId: UUID): List<NoteResDto> {
+    override fun getNotesByFolder(folderId: UUID, auth: Authentication): List<NoteResDto> {
+        val userId = UUID.fromString(auth.name)
         val notes = noteRepository.findByFolderIdAndOwner_Id(folderId, userId)
             ?: throw ResourceNotFoundException("No notes found in folder: $folderId")
 
