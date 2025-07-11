@@ -6,7 +6,6 @@ import com.notestaking.notes_api.dtos.note.NoteResDto
 import com.notestaking.notes_api.service.folder.FolderService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid
-import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication

@@ -4,13 +4,30 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "users")
-class UserEntity (
+class UserEntity(
 
     @Column(nullable = false, length = 50, unique = true)
-    var username: String,
+    var username: String = "",
+
     @Column(nullable = false, length = 50, unique = true)
-    var email: String,
+    var email: String = "",
+
     @Column(nullable = false)
-    var password: String
+    var password: String = ""
 
-    ): BaseEntity()
+) : BaseEntity()
+
+
+//@Entity
+//@Table(name = "users")
+//class UserEntity (
+//
+//    @Column(nullable = false, length = 50, unique = true)
+//    var username: String,
+//    @Column(nullable = false, length = 50, unique = true)
+//    var email: String,
+//    @Column(nullable = false)
+//    var password: String
+//
+//    ): BaseEntity()
+

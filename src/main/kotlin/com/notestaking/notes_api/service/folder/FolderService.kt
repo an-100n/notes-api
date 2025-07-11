@@ -11,5 +11,6 @@ interface FolderService {
     fun getFolders(auth: Authentication): List<FolderResDto>
     fun getNotesByFolder(folderId: UUID, auth: Authentication): List<NoteResDto>
     fun createFolder(folder: FolderReqDto, auth: Authentication): FolderResDto
+    fun createFolder(folder: FolderReqDto, user: UserEntity): FolderResDto
     fun deleteFolder(folderId: UUID, auth: Authentication)
 }

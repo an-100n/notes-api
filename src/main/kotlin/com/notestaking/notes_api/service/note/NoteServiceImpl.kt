@@ -61,7 +61,7 @@ class NoteServiceImpl(
             id = note.id!!,
             noteTitle = note.noteTitle,
             noteBody = note.noteBody,
-            folderId = note.folder.id!!
+            folderId = note.folder?.id!!
         )
     }
 

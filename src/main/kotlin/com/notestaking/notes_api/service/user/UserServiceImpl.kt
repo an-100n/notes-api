@@ -3,9 +3,11 @@ package com.notestaking.notes_api.service.user
 import com.notestaking.notes_api.dtos.folder.FolderReqDto
 import com.notestaking.notes_api.dtos.user.UserReqDto
 import com.notestaking.notes_api.dtos.user.UserResDto
+import com.notestaking.notes_api.entity.FolderEntity
 import com.notestaking.notes_api.entity.UserEntity
 import com.notestaking.notes_api.exceptions.ResourceNotFoundException
 import com.notestaking.notes_api.exceptions.DuplicateResourceException
+import com.notestaking.notes_api.repository.FolderRepository
 import com.notestaking.notes_api.repository.UserRepository
 import com.notestaking.notes_api.service.folder.FolderService
 import jakarta.transaction.Transactional
@@ -18,7 +20,7 @@ import java.util.*
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder,
-    private val folderService: FolderService
+    private val folderRepository: FolderRepository
 ) : UserService {
 
     @Transactional
@@ -68,8 +70,15 @@ class UserServiceImpl(
     override fun findUserById(userId: UUID): UserEntity? =
         userRepository.findById(userId).orElse(null)
 
-    private fun createDefaultFolder(user: UserEntity) {
-        val defaultFolder = FolderReqDto(folderName = "default")
-        folderService.createFolder(defaultFolder, user)
-    }
+//    private fun createDefaultFolder(user: UserEntity) {
+//        val defaultFolder = FolderReqDto(folderName = "default")
+//        folderService.createFolder(defaultFolder, user)
+//    }
+private fun createDefaultFolder(user: UserEntity) {
+    val defaultFolder = FolderEntity(
+        folderName = "default",
+        user = user
+    )
+    folderRepository.save(defaultFolder)
+}
 }

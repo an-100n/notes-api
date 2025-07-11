@@ -5,6 +5,7 @@ import com.notestaking.notes_api.dtos.folder.FolderReqDto
 import com.notestaking.notes_api.dtos.folder.FolderResDto
 import com.notestaking.notes_api.dtos.note.NoteResDto
 import com.notestaking.notes_api.entity.FolderEntity
+import com.notestaking.notes_api.entity.UserEntity
 import com.notestaking.notes_api.exceptions.ServiceException
 import com.notestaking.notes_api.repository.FolderRepository
 import com.notestaking.notes_api.repository.NoteRepository
@@ -27,6 +28,25 @@ class FolderServiceImpl(
         val userId = UUID.fromString(auth.name)
         val user = userService.findUserById(userId)
             ?: throw ServiceException("User not found with ID: $userId")
+        log.info("FolderServiceImpl -> createFolder {}", user)
+
+        val folderEntity = FolderEntity(
+            folderName = folder.folderName,
+            user = user
+        )
+
+        val savedFolder = folderRepository.save(folderEntity)
+
+        return FolderResDto(
+            id = savedFolder.id!!,
+            folderName = savedFolder.folderName
+        )
+    }
+
+    override fun createFolder(
+        folder: FolderReqDto,
+        user: UserEntity
+    ): FolderResDto {
         log.info("FolderServiceImpl -> createFolder {}", user)
 
         val folderEntity = FolderEntity(
@@ -80,7 +100,7 @@ class FolderServiceImpl(
                 id = it.id!!,
                 noteTitle = it.noteTitle,
                 noteBody = it.noteBody,
-                folderId = it.folder.id!!
+                folderId = it.folder?.id!!
             )
         }
     }
